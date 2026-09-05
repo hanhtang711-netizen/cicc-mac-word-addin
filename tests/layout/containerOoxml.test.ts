@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { buildContainerOoxml } from "../../src/layout/containerOoxml";
 import { planContainer } from "../../src/layout/layoutPlanner";
+import { createPictureSlots } from "../../src/layout/pictureSlots";
 describe("blank container OOXML", () => {
   it("is borderless, fixed, and includes styled title/source rows without image prompts", () => {
-    const xml = buildContainerOoxml(planContainer("double"));
+    const plan = planContainer("double");
+    const xml = buildContainerOoxml(plan, createPictureSlots(plan, "fixture"));
     expect(xml).toContain('<w:tblLayout w:type="fixed"/>'); expect(xml).toContain('<w:top w:val="nil"/>'); expect(xml).toContain('w:w="4873"'); expect(xml).toContain('w:val="1707"');
     expect(xml.match(/w:pStyle w:val="ChartTableTitle"/g)).toHaveLength(2);
     expect(xml.match(/w:pStyle w:val="RPBodySourceLine"/g)).toHaveLength(2);
@@ -18,6 +20,9 @@ describe("blank container OOXML", () => {
     expect(xml.match(/<w:t[^>]*>：<\/w:t>/g)).toHaveLength(2);
     expect(xml.match(/<w:t[^>]*>资料来源：<\/w:t>/g)).toHaveLength(2);
     expect(xml).not.toMatch(/粘贴|在此|<w:drawing|<w:blip/);
+    expect(xml).toContain('<w:picture/>');
+    expect(xml).toContain('w:tag w:val="cicc-picture:double:fixture:1"');
+    expect(xml).toContain('w:tag w:val="cicc-picture:double:fixture:2"');
   });
 
   it("matches the original wide and narrow placeholder footprints", () => {

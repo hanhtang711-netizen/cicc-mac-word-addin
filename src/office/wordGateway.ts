@@ -2,12 +2,78 @@ import { planSelectionStyle } from "../styles/stylePlanner";
 import type { CICCStyleId } from "../styles/ciccTokens";
 import { planContainer } from "../layout/layoutPlanner";
 import { buildContainerOoxml } from "../layout/containerOoxml";
+import { createPictureSlots, parsePictureSlotTag, type PictureSlot } from "../layout/pictureSlots";
 import { TocService } from "../toc/tocService";
 
 export type WordRun = (callback: (context: any) => Promise<void>) => Promise<void>;
 
 export class WordGateway {
+  private readonly boundPictureControlIds = new Set<number>();
+  private nextPictureContainer = 0;
+
   constructor(private readonly run: WordRun = (callback) => Word.run(callback)) {}
+
+  private supportsPictureChangeEvents(): boolean {
+    return (globalThis as any).Office?.context?.requirements?.isSetSupported?.("WordApi", "1.5") === true;
+  }
+
+  private async resizePictures(controlId: number, slot: Pick<PictureSlot, "widthPt" | "heightPt">): Promise<void> {
+    await this.run(async (context) => {
+      const control: any = context.document.contentControls.getById(controlId);
+      const pictures: any = control.inlinePictures;
+      pictures.load?.("items");
+      await context.sync();
+      for (const picture of pictures.items ?? []) {
+        // This order mirrors the original CICC command: first establish the
+        // configured height, then set the column width while keeping the
+        // source image's aspect ratio.  Arbitrary pasted images therefore fit
+        // their column without distortion, and the at-least table row expands
+        // instead of allowing an image to overlap the source line.
+        picture.lockAspectRatio = true;
+        picture.height = slot.heightPt;
+        picture.width = slot.widthPt;
+      }
+      await context.sync();
+    });
+  }
+
+  private async bindPictureSlots(context: any, slots: PictureSlot[]): Promise<void> {
+    if (!this.supportsPictureChangeEvents()) return;
+    const matches = slots.map((slot) => ({ slot, controls: context.document.contentControls.getByTag(slot.tag) }));
+    for (const match of matches) match.controls.load?.("items/id");
+    await context.sync();
+
+    const newlyBound: number[] = [];
+    for (const { slot, controls } of matches) {
+      for (const control of controls.items ?? []) {
+        if (this.boundPictureControlIds.has(control.id) || !control.onDataChanged?.add) continue;
+        control.onDataChanged.add(async (event: { ids?: number[] }) => {
+          for (const id of event.ids ?? []) {
+            try { await this.resizePictures(id, slot); } catch { /* Keep normal Word pasting available if the host rejects an optional resize. */ }
+          }
+        });
+        newlyBound.push(control.id);
+      }
+    }
+    await context.sync();
+    for (const id of newlyBound) this.boundPictureControlIds.add(id);
+  }
+
+  /** Reconnect image auto-fit after the task pane is reopened for a document. */
+  async enablePictureAutoFit(): Promise<void> {
+    if (!this.supportsPictureChangeEvents()) return;
+    await this.run(async (context) => {
+      const controls: any = context.document.contentControls;
+      controls.load?.("items/tag,id");
+      await context.sync();
+      const slots: PictureSlot[] = [];
+      for (const control of controls.items ?? []) {
+        const parsed = parsePictureSlotTag(control.tag);
+        if (parsed) slots.push({ ...parsed, tag: control.tag });
+      }
+      await this.bindPictureSlots(context, slots);
+    });
+  }
 
   async applySelectionStyle(styleId: CICCStyleId): Promise<void> {
     const plan = planSelectionStyle(styleId);
@@ -56,10 +122,12 @@ export class WordGateway {
 
   async insertLayout(kind: "wide"|"narrow"|"double"): Promise<void> {
     const plan = planContainer(kind);
+    const pictureSlots = createPictureSlots(plan, `${Date.now().toString(36)}${(++this.nextPictureContainer).toString(36)}`);
     await this.run(async (context) => {
       const range: any = context.document.getSelection();
-      const inserted: any = range.insertOoxml(buildContainerOoxml(plan), "Before");
+      const inserted: any = range.insertOoxml(buildContainerOoxml(plan, pictureSlots), "Before");
       await context.sync();
+      await this.bindPictureSlots(context, pictureSlots);
       // Refresh SEQ Figure fields so the newly inserted caption displays its
       // current number immediately.  Field updates are optional metadata;
       // hosts that do not expose fields must still keep the layout insertion.

@@ -1,4 +1,4 @@
-import { handleLayoutCommand, handleStyleCommand, handleTocCommand } from "./app/commandHandlers";
+import { enablePictureAutoFit, handleLayoutCommand, handleStyleCommand, handleTocCommand } from "./app/commandHandlers";
 
 const styles = [
   ["bodyHeading1", "正文一级标题"], ["bodyHeading2", "正文二级标题"], ["bodyHeading3", "正文三级标题"],
@@ -21,4 +21,4 @@ export function mountTaskpane() {
   addButton(tocRoot, "目录", () => handleTocCommand("toc")); addButton(tocRoot, "图表目录", () => handleTocCommand("figures"));
 }
 
-if (typeof Office !== "undefined") Office.onReady(() => mountTaskpane());
+if (typeof Office !== "undefined") Office.onReady(() => { mountTaskpane(); void enablePictureAutoFit(); });

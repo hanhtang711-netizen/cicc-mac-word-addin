@@ -45,4 +45,32 @@ describe("Word gateway", () => {
     await gateway.insertLayout("wide");
     expect(updated).toBe(1);
   });
+
+  it("fits a pasted image to its CICC picture control after the control changes", async () => {
+    const originalOffice = (globalThis as any).Office;
+    (globalThis as any).Office = { context: { requirements: { isSetSupported: (set: string, version: string) => set === "WordApi" && version === "1.5" } } };
+    try {
+      let onDataChanged: ((args: { ids: number[] }) => Promise<void>) | undefined;
+      const picture: any = {};
+      const pictureControl: any = { id: 501, onDataChanged: { add: (handler: (args: { ids: number[] }) => Promise<void>) => { onDataChanged = handler; } } };
+      const contentControls: any = {
+        getByTag: () => ({ items: [pictureControl], load: () => undefined }),
+        getById: () => ({ inlinePictures: { items: [picture], load: () => undefined } }),
+      };
+      const range: any = { insertOoxml: () => ({}) };
+      const gateway = new WordGateway(async (callback) => callback({
+        document: { getSelection: () => range, contentControls },
+        sync: async () => undefined,
+      } as any));
+
+      await gateway.insertLayout("wide");
+      await onDataChanged?.({ ids: [501] });
+
+      expect(picture.lockAspectRatio).toBe(true);
+      expect(picture.height).toBe(150.75);
+      expect(picture.width).toBe(478.5);
+    } finally {
+      (globalThis as any).Office = originalOffice;
+    }
+  });
 });

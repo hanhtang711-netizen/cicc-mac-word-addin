@@ -20,7 +20,10 @@ export function createHandlers(deps: CommandDependencies) {
 }
 
 let handlers: ReturnType<typeof createHandlers> | undefined;
-export function getHandlers() { return handlers ??= createHandlers({ gateway: new WordGateway(), feedback: new PaneFeedback() }); }
+let gateway: WordGateway | undefined;
+const getGateway = () => gateway ??= new WordGateway();
+export function getHandlers() { return handlers ??= createHandlers({ gateway: getGateway(), feedback: new PaneFeedback() }); }
+export const enablePictureAutoFit = () => getGateway().enablePictureAutoFit();
 export function registerCommandHandlers() { const h = getHandlers(); Object.assign(globalThis, h); return h; }
 export const handleStyleCommand = (id: Exclude<CICCStyleId, "tocHeading"|"toc1"|"toc2"|"tableOfFigures">) => getHandlers()[({ bodyHeading1: "applyHeading1", bodyHeading2: "applyHeading2", bodyHeading3: "applyHeading3", body: "applyBody", bodyIndented: "applyIndentedBody", bullet1: "applyBullet1", bullet2: "applyBullet2", chartTitle: "applyChartTitle", sourceLine: "applySourceLine" } as const)[id]]();
 export const handleLayoutCommand = (kind: LayoutKind) => getHandlers()[({ wide: "insertWideLayout", narrow: "insertNarrowLayout", double: "insertDoubleLayout" } as const)[kind]]();
