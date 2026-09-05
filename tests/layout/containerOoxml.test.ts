@@ -19,4 +19,16 @@ describe("blank container OOXML", () => {
     expect(xml.match(/<w:t[^>]*>资料来源：<\/w:t>/g)).toHaveLength(2);
     expect(xml).not.toMatch(/粘贴|在此|<w:drawing|<w:blip/);
   });
+
+  it("matches the original wide and narrow placeholder footprints", () => {
+    const wide = buildContainerOoxml(planContainer("wide"));
+    const narrow = buildContainerOoxml(planContainer("narrow"));
+
+    expect(wide).toContain('<w:tblW w:w="9570" w:type="dxa"/>');
+    expect(wide).toContain('<w:trHeight w:val="3015" w:hRule="atLeast"/>');
+    expect(wide).not.toContain("<w:tblInd");
+    expect(narrow).toContain('<w:tblW w:w="6720" w:type="dxa"/>');
+    expect(narrow).toContain('<w:tblInd w:w="2100" w:type="dxa"/>');
+    expect(narrow).toContain('<w:trHeight w:val="3600" w:hRule="atLeast"/>');
+  });
 });
