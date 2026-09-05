@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+  xsi:type="TaskPaneApp">
+  <Id>8bba4fb2-e2ec-4ab5-94ee-f5d1d3ef4701</Id>
+  <Version>0.1.0.0</Version>
+  <ProviderName>CICC</ProviderName>
+  <DefaultLocale>zh-CN</DefaultLocale>
+  <DisplayName DefaultValue="中金 Word 工具" />
+  <Description DefaultValue="中金正文样式、图表版式与目录工具" />
+  <IconUrl DefaultValue="{{BASE_URL}}/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="{{BASE_URL}}/assets/icon-80.png" />
+  <SupportUrl DefaultValue="{{BASE_URL}}/taskpane.html" />
+  <AppDomains><AppDomain>{{BASE_URL}}</AppDomain></AppDomains>
+  <Hosts><Host Name="Document" /></Hosts>
+  <Requirements><Sets DefaultMinVersion="1.3"><Set Name="WordApi" /></Sets></Requirements>
+  <DefaultSettings><SourceLocation DefaultValue="{{BASE_URL}}/taskpane.html" /></DefaultSettings>
+  <Permissions>ReadWriteDocument</Permissions>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements><bt:Sets DefaultMinVersion="1.3"><bt:Set Name="WordApi" /></bt:Sets></Requirements>
+    <Hosts><Host xsi:type="Document"><DesktopFormFactor>
+      <FunctionFile resid="Commands.Url" />
+      <ExtensionPoint xsi:type="PrimaryCommandSurface"><CustomTab id="CiccWord.Tab">
+        <Group id="CiccWord.Styles.Group"><Label resid="Styles.Group.Label" /><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon>
+          <Control xsi:type="Menu" id="BodyStyles.Menu"><Label resid="Styles.Menu.Label" /><Supertip><Title resid="Styles.Menu.Label" /><Description resid="Styles.Menu.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Items>
+            <Item id="StyleHeading1"><Label resid="Style.Heading1" /><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading1</FunctionName></Action></Item>
+            <Item id="StyleHeading2"><Label resid="Style.Heading2" /><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading2</FunctionName></Action></Item>
+            <Item id="StyleHeading3"><Label resid="Style.Heading3" /><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading3</FunctionName></Action></Item>
+            <Item id="StyleBody"><Label resid="Style.Body" /><Action xsi:type="ExecuteFunction"><FunctionName>applyBody</FunctionName></Action></Item>
+            <Item id="StyleIndented"><Label resid="Style.Indented" /><Action xsi:type="ExecuteFunction"><FunctionName>applyIndentedBody</FunctionName></Action></Item>
+            <Item id="StyleBullet1"><Label resid="Style.Bullet1" /><Action xsi:type="ExecuteFunction"><FunctionName>applyBullet1</FunctionName></Action></Item>
+            <Item id="StyleBullet2"><Label resid="Style.Bullet2" /><Action xsi:type="ExecuteFunction"><FunctionName>applyBullet2</FunctionName></Action></Item>
+            <Item id="StyleChartTitle"><Label resid="Style.ChartTitle" /><Action xsi:type="ExecuteFunction"><FunctionName>applyChartTitle</FunctionName></Action></Item>
+            <Item id="StyleSource"><Label resid="Style.Source" /><Action xsi:type="ExecuteFunction"><FunctionName>applySourceLine</FunctionName></Action></Item>
+          </Items></Control>
+        </Group>
+        <Group id="CiccWord.Layout.Group"><Label resid="Layout.Group.Label" /><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon>
+          <Control xsi:type="Menu" id="Layouts.Menu"><Label resid="Layouts.Menu.Label" /><Supertip><Title resid="Layouts.Menu.Label" /><Description resid="Layouts.Menu.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Items>
+            <Item id="LayoutWide"><Label resid="Layout.Wide" /><Action xsi:type="ExecuteFunction"><FunctionName>insertWideLayout</FunctionName></Action></Item>
+            <Item id="LayoutNarrow"><Label resid="Layout.Narrow" /><Action xsi:type="ExecuteFunction"><FunctionName>insertNarrowLayout</FunctionName></Action></Item>
+            <Item id="LayoutDouble"><Label resid="Layout.Double" /><Action xsi:type="ExecuteFunction"><FunctionName>insertDoubleLayout</FunctionName></Action></Item>
+          </Items></Control>
+        </Group>
+        <Group id="CiccWord.Toc.Group"><Label resid="Toc.Group.Label" /><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon>
+          <Control xsi:type="Button" id="InsertToc"><Label resid="Toc.Insert" /><Supertip><Title resid="Toc.Insert" /><Description resid="Toc.Insert.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Action xsi:type="ExecuteFunction"><FunctionName>insertToc</FunctionName></Action></Control>
+          <Control xsi:type="Button" id="InsertFigures"><Label resid="Toc.Figures" /><Supertip><Title resid="Toc.Figures" /><Description resid="Toc.Figures.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Action xsi:type="ExecuteFunction"><FunctionName>insertFiguresToc</FunctionName></Action></Control>
+          <Control xsi:type="Button" id="OpenTaskpane"><Label resid="Taskpane.Label" /><Supertip><Title resid="Taskpane.Label" /><Description resid="Taskpane.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Action xsi:type="ShowTaskpane"><TaskpaneId>CiccWordPane</TaskpaneId><SourceLocation resid="Taskpane.Url" /></Action></Control>
+        </Group>
+        <Label resid="CiccWord.Tab.Label" />
+      </CustomTab></ExtensionPoint>
+    </DesktopFormFactor></Host></Hosts>
+    <Resources>
+      <bt:Images><bt:Image id="Icon.16" DefaultValue="{{BASE_URL}}/assets/icon-16.png" /><bt:Image id="Icon.32" DefaultValue="{{BASE_URL}}/assets/icon-32.png" /><bt:Image id="Icon.64" DefaultValue="{{BASE_URL}}/assets/icon-64.png" /><bt:Image id="Icon.80" DefaultValue="{{BASE_URL}}/assets/icon-80.png" /></bt:Images>
+      <bt:Urls><bt:Url id="Commands.Url" DefaultValue="{{BASE_URL}}/commands.html" /><bt:Url id="Taskpane.Url" DefaultValue="{{BASE_URL}}/taskpane.html" /></bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="CiccWord.Tab.Label" DefaultValue="中金 Word" /><bt:String id="Styles.Group.Label" DefaultValue="正文样式" /><bt:String id="Styles.Menu.Label" DefaultValue="应用样式" /><bt:String id="Layout.Group.Label" DefaultValue="图表版式" /><bt:String id="Layouts.Menu.Label" DefaultValue="插入图片框" /><bt:String id="Toc.Group.Label" DefaultValue="目录" /><bt:String id="Toc.Insert" DefaultValue="目录" /><bt:String id="Toc.Figures" DefaultValue="图表目录" /><bt:String id="Taskpane.Label" DefaultValue="打开工具窗格" />
+        <bt:String id="Style.Heading1" DefaultValue="正文一级标题" /><bt:String id="Style.Heading2" DefaultValue="正文二级标题" /><bt:String id="Style.Heading3" DefaultValue="正文三级标题" /><bt:String id="Style.Body" DefaultValue="正文" /><bt:String id="Style.Indented" DefaultValue="正文（左缩进）" /><bt:String id="Style.Bullet1" DefaultValue="一级项目符号" /><bt:String id="Style.Bullet2" DefaultValue="二级项目符号" /><bt:String id="Style.ChartTitle" DefaultValue="图表头" /><bt:String id="Style.Source" DefaultValue="资料来源" /><bt:String id="Layout.Wide" DefaultValue="宽图" /><bt:String id="Layout.Narrow" DefaultValue="窄图" /><bt:String id="Layout.Double" DefaultValue="双图" />
+      </bt:ShortStrings>
+      <bt:LongStrings><bt:String id="Styles.Menu.Desc" DefaultValue="将 CICC 正文样式应用到当前选区。" /><bt:String id="Layouts.Menu.Desc" DefaultValue="在光标处插入无边框空白图片容器。" /><bt:String id="Toc.Insert.Desc" DefaultValue="插入或更新原生动态目录。" /><bt:String id="Toc.Figures.Desc" DefaultValue="插入或更新原生图表目录。" /><bt:String id="Taskpane.Desc" DefaultValue="打开中金 Word 样式与版式工具。" /></bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
