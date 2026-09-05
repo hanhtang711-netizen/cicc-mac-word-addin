@@ -2,7 +2,7 @@ import type { ContainerPlan } from "./layoutPlanner";
 import { buildRunOoxml, wrapInOoxmlPackage } from "../office/ooxml";
 
 const figureNumberField = () => {
-  const resultRun = buildRunOoxml({ text: "1", asciiFont: "Arial", eastAsiaFont: "黑体", complexScriptFont: "黑体", sizeHalfPoints: 19, eastAsiaSizeHalfPoints: 20, bold: true }).replace("</w:rPr>", "<w:noProof/></w:rPr>");
+  const resultRun = buildRunOoxml({ text: "1", asciiFont: "黑体", eastAsiaFont: "黑体", complexScriptFont: "黑体", sizeHalfPoints: 19, eastAsiaSizeHalfPoints: 20, bold: true }).replace("</w:rPr>", "<w:noProof/></w:rPr>");
   return `<w:fldSimple w:instr=" SEQ Figure  \\* MERGEFORMAT ">${resultRun}</w:fldSimple>`;
 };
 const titleParagraph = () => `<w:p><w:pPr><w:pStyle w:val="ChartTableTitle"/><w:keepNext/><w:keepLines/><w:spacing w:before="100" w:after="1" w:line="300" w:lineRule="exact"/></w:pPr>${buildRunOoxml({ text: "图表", asciiFont: "Arial", eastAsiaFont: "黑体", sizeHalfPoints: 19, eastAsiaSizeHalfPoints: 20, bold: true })}${figureNumberField()}${buildRunOoxml({ text: "：", asciiFont: "Arial", eastAsiaFont: "黑体", sizeHalfPoints: 19, eastAsiaSizeHalfPoints: 20, bold: true })}</w:p>`;
