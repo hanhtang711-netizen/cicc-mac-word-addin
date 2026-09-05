@@ -1,7 +1,10 @@
 import type { ContainerPlan } from "./layoutPlanner";
 import { buildRunOoxml, wrapInOoxmlPackage } from "../office/ooxml";
 
-const figureNumberField = () => `<w:fldSimple w:instr=" SEQ Figure  \\* MERGEFORMAT "><w:r><w:rPr><w:noProof/></w:rPr><w:t>1</w:t></w:r></w:fldSimple>`;
+const figureNumberField = () => {
+  const resultRun = buildRunOoxml({ text: "1", asciiFont: "Arial", eastAsiaFont: "黑体", complexScriptFont: "黑体", sizeHalfPoints: 19, eastAsiaSizeHalfPoints: 20, bold: true }).replace("</w:rPr>", "<w:noProof/></w:rPr>");
+  return `<w:fldSimple w:instr=" SEQ Figure  \\* MERGEFORMAT ">${resultRun}</w:fldSimple>`;
+};
 const titleParagraph = () => `<w:p><w:pPr><w:pStyle w:val="ChartTableTitle"/><w:keepNext/><w:keepLines/><w:spacing w:before="100" w:after="1" w:line="300" w:lineRule="exact"/></w:pPr>${buildRunOoxml({ text: "图表", asciiFont: "Arial", eastAsiaFont: "黑体", sizeHalfPoints: 19, eastAsiaSizeHalfPoints: 20, bold: true })}${figureNumberField()}${buildRunOoxml({ text: "：", asciiFont: "Arial", eastAsiaFont: "黑体", sizeHalfPoints: 19, eastAsiaSizeHalfPoints: 20, bold: true })}</w:p>`;
 const imageParagraph = (imageHeight: number) => `<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:line="${imageHeight}" w:lineRule="exact"/></w:pPr></w:p>`;
 const sourceParagraph = () => `<w:p><w:pPr><w:pStyle w:val="RPBodySourceLine"/><w:spacing w:before="1" w:after="100" w:line="200" w:lineRule="exact"/><w:jc w:val="left"/></w:pPr>${buildRunOoxml({ text: "资料来源：", eastAsiaFont: "黑体", complexScriptFont: "黑体", sizeHalfPoints: 13, eastAsiaSizeHalfPoints: 15, italic: true })}</w:p>`;

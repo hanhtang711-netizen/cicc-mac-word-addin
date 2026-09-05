@@ -9,6 +9,11 @@ describe("blank container OOXML", () => {
     expect(xml.match(/w:pStyle w:val="RPBodySourceLine"/g)).toHaveLength(2);
     expect(xml.match(/<w:t[^>]*>图表<\/w:t>/g)).toHaveLength(2);
     expect(xml.match(/<w:fldSimple[^>]*SEQ Figure[^>]*>/g)).toHaveLength(2);
+    const firstFigureField = xml.slice(xml.indexOf("<w:fldSimple"), xml.indexOf("</w:fldSimple>"));
+    expect(firstFigureField).toContain('w:eastAsia="黑体"');
+    expect(firstFigureField).toContain("<w:b/>");
+    expect(firstFigureField).toContain('w:sz w:val="19"');
+    expect(firstFigureField).toContain('w:szCs w:val="20"');
     expect(xml.match(/<w:t[^>]*>：<\/w:t>/g)).toHaveLength(2);
     expect(xml.match(/<w:t[^>]*>资料来源：<\/w:t>/g)).toHaveLength(2);
     expect(xml).not.toMatch(/粘贴|在此|<w:drawing|<w:blip/);
