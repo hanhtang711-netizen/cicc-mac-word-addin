@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildRunOoxml, buildParagraphOoxml } from "../../src/office/ooxml";
+import { buildRunOoxml, buildParagraphOoxml, wrapInOoxmlPackage } from "../../src/office/ooxml";
 
 describe("Word OOXML precision helpers", () => {
   it("writes eastAsia and ASCII fonts and escapes text", () => {
@@ -9,5 +9,12 @@ describe("Word OOXML precision helpers", () => {
   it("writes exact line spacing, indents, outline, and keep flags", () => {
     const xml = buildParagraphOoxml({ lineTwip: 360, lineRule: "exact", leftTwip: 1000, beforeTwip: 200, afterTwip: 50, outlineLevel: 1, keepNext: true, keepLines: true });
     expect(xml).toContain('w:line="360" w:lineRule="exact"'); expect(xml).toContain('w:left="1000"'); expect(xml).toContain('w:outlineLvl w:val="1"'); expect(xml).toContain("<w:keepNext/>"); expect(xml).toContain("<w:keepLines/>");
+  });
+  it("wraps Mac insertOoxml payloads in a package envelope", () => {
+    const xml = wrapInOoxmlPackage("<w:p/>");
+    expect(xml).toContain("<pkg:package");
+    expect(xml).toContain("/_rels/.rels");
+    expect(xml).toContain("/word/document.xml");
+    expect(xml).toContain("<w:body><w:p/></w:body>");
   });
 });

@@ -1,6 +1,14 @@
 export interface RunPlan { text?: string; asciiFont?: string; eastAsiaFont?: string; complexScriptFont?: string; sizeHalfPoints?: number; eastAsiaSizeHalfPoints?: number; color?: string; bold?: boolean; italic?: boolean; underline?: boolean; }
 export interface ParagraphOoxmlPlan { lineTwip?: number; lineRule?: "exact"|"auto"; leftTwip?: number; firstLineTwip?: number; beforeTwip?: number; afterTwip?: number; outlineLevel?: number; keepNext?: boolean; keepLines?: boolean; }
 const W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+/**
+ * Word for Mac's insertOoxml implementation requires a package envelope,
+ * rather than a bare w:p/w:tbl fragment.  Keep the envelope deliberately
+ * small: the host merges the supplied document body into the active file.
+ */
+export function wrapInOoxmlPackage(bodyXml: string): string {
+  return `<pkg:package xmlns:pkg="http://schemas.microsoft.com/office/2006/xmlPackage"><pkg:part pkg:name="/_rels/.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml" pkg:padding="512"><pkg:xmlData><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships></pkg:xmlData></pkg:part><pkg:part pkg:name="/word/document.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"><pkg:xmlData><w:document xmlns:w="${W_NS}"><w:body>${bodyXml}</w:body></w:document></pkg:xmlData></pkg:part></pkg:package>`;
+}
 const esc = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 const attr = (name: string, value: string | number) => `${name}="${esc(String(value))}"`;
 

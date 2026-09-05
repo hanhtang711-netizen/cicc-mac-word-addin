@@ -17,7 +17,6 @@ export class WordGateway {
       await context.sync();
       if (range.text === undefined && range.load) throw new Error("无法读取当前选区");
       const font = range.font ?? (range.font = {}); const para = range.paragraphFormat ?? (range.paragraphFormat = {});
-      if (plan.wordStyle) range.style = plan.wordStyle;
       if (plan.run.asciiFont) { font.name = plan.run.asciiFont; font.nameAscii = plan.run.asciiFont; font.nameFarEast = plan.run.eastAsiaFont; }
       if (plan.run.eastAsiaFont) font.nameFarEast = plan.run.eastAsiaFont;
       if (plan.run.sizePt !== undefined) font.size = plan.run.sizePt;
@@ -36,6 +35,22 @@ export class WordGateway {
       if (plan.listLevel !== undefined && range.listFormat) { range.listFormat.applyBullet?.(); range.listFormat.level = plan.listLevel; }
       if (plan.outlineLevel !== undefined) para.outlineLevel = plan.outlineLevel;
       await context.sync();
+
+      // Word for Mac can reject style assignment in compatibility-mode or
+      // documents that do not contain the built-in style (InvalidArgument).
+      // The direct formatting above is the authoritative CICC appearance and
+      // must not be rolled back just because an optional style name is absent.
+      // Try the semantic style only after the formatting batch has committed.
+      if (plan.wordStyle) {
+        try {
+          range.style = plan.wordStyle;
+          await context.sync();
+        } catch {
+          // Keep the direct formatting and outline level as the portable
+          // fallback; no user-visible failure is warranted for this optional
+          // metadata step.
+        }
+      }
     });
   }
 

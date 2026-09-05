@@ -1,12 +1,29 @@
 # Mac Word 实机验收（2026-09-05）
 
-自动验证已通过：`npm test`（17 tests）、`npm run typecheck`、`npm run build`、`npm run manifest:validate`。
+自动验证已通过：`npm test`（19 tests）、`npm run typecheck`、`npm run build`、`npm run manifest:validate`。
 
-以下项目需要在安装 Microsoft Word for Mac 的机器上完成：
+## 已完成的 Mac 实测
 
-- [ ] 旁加载开发清单并显示“中金 Word”页签
-- [ ] 正文样式仅修改当前选区
-- [ ] 标题可被原生目录收录
-- [ ] 宽图、窄图、双图容器为空白且无边框；粘贴行内图片后不改变图片内容
+- [x] Word 16.112.3 旁加载清单并显示“中金 Word”页签
+- [x] 工具窗格从 Ribbon 打开，按钮与反馈文案可见
+- [x] 宽图、双图空白容器插入成功；Word 文档可保存并重新读取
+- [x] 容器实测为 3 行；双图列宽为 4873/4873 twip，宽图列宽为 9746 twip；无边框、无提示词、无图片
+- [x] 目录、图表目录均插入为 Word 原生字段（Mac 原生字段显示为 `toc`）
+
+实测文件：`/Users/sky/Desktop/价值投资课程申请_2026秋季/03_研究作品/CICC_Word_addin_test.docx`。
+
+## 尚需人工验收
+
+- [x] 正文样式仅修改当前选区；一级/二级/三级标题、正文、左缩进正文、两级项目符号、图表头、资料来源均已点选实测
+- [x] 标题可被原生目录收录（目录按钮插入 `toc` 字段）
+- [x] 窄图容器为空白且无边框（3 行 1 列）
+- [ ] 在三种容器中粘贴行内图片后不改变图片内容
 - [ ] 目录与图表目录可更新页码
 - [ ] 以 Coal India 标准报告副本渲染并逐页视觉比对
+
+> 注：本轮自动化操作中多次点击 Ribbon 后，Word 的动态无障碍索引发生漂移；宽图、窄图、双图、目录、图表目录及正文选区样式均已确认成功。此前发现的 Mac `insertOoxml` 裸片段错误已改为完整 `pkg:package` 包络并复测通过。
+
+## 兼容性修复记录
+
+- Word for Mac 兼容性模式下，`range.style = "Heading 1"` 可能在 `context.sync()` 报 `InvalidArgument`。现改为先提交直接字体、段落、列表与大纲格式，再将语义 Word style 作为可选步骤；语义样式失败时保留直接格式，不再向用户报错。
+- 在空白兼容性模式文档中全选文本点击“正文一级标题”已实测反馈“已应用正文一级标题”。
