@@ -2,7 +2,7 @@ import { planSelectionStyle } from "../styles/stylePlanner";
 import type { CICCStyleId } from "../styles/ciccTokens";
 import { planContainer } from "../layout/layoutPlanner";
 import { buildContainerOoxml } from "../layout/containerOoxml";
-import { planToc } from "../toc/tocPlanner";
+import { TocService } from "../toc/tocService";
 
 export type WordRun = (callback: (context: any) => Promise<void>) => Promise<void>;
 
@@ -45,7 +45,6 @@ export class WordGateway {
   }
 
   async insertOrUpdateToc(kind: "toc"|"figures"): Promise<void> {
-    const plan = planToc(kind);
-    await this.run(async (context) => { const range: any = context.document.getSelection(); range.insertOoxml(plan.ooxml, "Before"); await context.sync(); });
+    await new TocService(this.run).insertOrUpdate(kind);
   }
 }
