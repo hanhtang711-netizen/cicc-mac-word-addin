@@ -1,6 +1,10 @@
 import type { ContainerPlan } from "./layoutPlanner";
-import { wrapInOoxmlPackage } from "../office/ooxml";
-const cell = (width: number, row: number, imageHeight: number) => `<w:tc><w:tcPr><w:tcW w:w="${width}" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/>${row === 1 ? `<w:spacing w:line="${imageHeight}" w:lineRule="exact"/>` : ""}</w:pPr></w:p></w:tc>`;
+import { buildRunOoxml, wrapInOoxmlPackage } from "../office/ooxml";
+
+const titleParagraph = () => `<w:p><w:pPr><w:pStyle w:val="ChartTableTitle"/><w:keepNext/><w:keepLines/><w:spacing w:before="100" w:after="1" w:line="300" w:lineRule="exact"/></w:pPr>${buildRunOoxml({ text: "图表：", asciiFont: "Arial", eastAsiaFont: "黑体", sizeHalfPoints: 19, eastAsiaSizeHalfPoints: 20, bold: true })}</w:p>`;
+const imageParagraph = (imageHeight: number) => `<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:line="${imageHeight}" w:lineRule="exact"/></w:pPr></w:p>`;
+const sourceParagraph = () => `<w:p><w:pPr><w:pStyle w:val="RPBodySourceLine"/><w:spacing w:before="1" w:after="100" w:line="200" w:lineRule="exact"/><w:jc w:val="left"/></w:pPr>${buildRunOoxml({ text: "资料来源：", eastAsiaFont: "黑体", complexScriptFont: "黑体", sizeHalfPoints: 13, eastAsiaSizeHalfPoints: 15, italic: true })}</w:p>`;
+const cell = (width: number, row: number, imageHeight: number) => `<w:tc><w:tcPr><w:tcW w:w="${width}" w:type="dxa"/></w:tcPr>${row === 0 ? titleParagraph() : row === 1 ? imageParagraph(imageHeight) : sourceParagraph()}</w:tc>`;
 export function buildContainerOoxml(plan: ContainerPlan): string {
   const borders = `<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>`;
   const grid = plan.columnWidthsTwip.map((w) => `<w:gridCol w:w="${w}"/>`).join("");
