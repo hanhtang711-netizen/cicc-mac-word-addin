@@ -17,20 +17,18 @@ export class WordGateway {
     return (globalThis as any).Office?.context?.requirements?.isSetSupported?.("WordApi", "1.5") === true;
   }
 
-  private async resizePictures(controlId: number, slot: Pick<PictureSlot, "widthPt" | "heightPt">): Promise<void> {
+  private async resizePictures(controlId: number, slot: Pick<PictureSlot, "widthPt">): Promise<void> {
     await this.run(async (context) => {
       const control: any = context.document.contentControls.getById(controlId);
       const pictures: any = control.inlinePictures;
       pictures.load?.("items");
       await context.sync();
       for (const picture of pictures.items ?? []) {
-        // This order mirrors the original CICC command: first establish the
-        // configured height, then set the column width while keeping the
-        // source image's aspect ratio.  Arbitrary pasted images therefore fit
-        // their column without distortion, and the at-least table row expands
-        // instead of allowing an image to overlap the source line.
+        // The original CICC templates have a fixed aspect ratio. Pasted
+        // images do not, so force only the column width and preserve their
+        // natural height. The image row is "at least" the template height and
+        // expands below the title instead of clipping the top of a tall image.
         picture.lockAspectRatio = true;
-        picture.height = slot.heightPt;
         picture.width = slot.widthPt;
       }
       await context.sync();

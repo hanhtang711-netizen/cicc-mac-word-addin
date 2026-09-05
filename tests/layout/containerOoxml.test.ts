@@ -36,4 +36,12 @@ describe("blank container OOXML", () => {
     expect(narrow).toContain('<w:tblInd w:w="2100" w:type="dxa"/>');
     expect(narrow).toContain('<w:trHeight w:val="3600" w:hRule="atLeast"/>');
   });
+
+  it("lets a pasted image expand its own table row instead of clipping it to the placeholder height", () => {
+    const xml = buildContainerOoxml(planContainer("wide"));
+    const imageControl = xml.slice(xml.indexOf("<w:sdt>"), xml.indexOf("</w:sdt>") + "</w:sdt>".length);
+
+    expect(imageControl).not.toContain('w:lineRule="exact"');
+    expect(xml).toContain('<w:trHeight w:val="3015" w:hRule="atLeast"/>');
+  });
 });

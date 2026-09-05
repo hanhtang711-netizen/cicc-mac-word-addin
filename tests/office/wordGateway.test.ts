@@ -67,7 +67,7 @@ describe("Word gateway", () => {
       await onDataChanged?.({ ids: [501] });
 
       expect(picture.lockAspectRatio).toBe(true);
-      expect(picture.height).toBe(150.75);
+      expect(picture.height).toBeUndefined();
       expect(picture.width).toBe(478.5);
     } finally {
       (globalThis as any).Office = originalOffice;
