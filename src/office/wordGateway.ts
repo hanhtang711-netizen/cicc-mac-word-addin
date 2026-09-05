@@ -1,6 +1,5 @@
 import { planSelectionStyle } from "../styles/stylePlanner";
 import type { CICCStyleId } from "../styles/ciccTokens";
-import { buildParagraphOoxml } from "./ooxml";
 import { planContainer } from "../layout/layoutPlanner";
 import { buildContainerOoxml } from "../layout/containerOoxml";
 import { planToc } from "../toc/tocPlanner";
@@ -35,7 +34,7 @@ export class WordGateway {
       if (p.keepWithNext !== undefined) para.keepWithNext = p.keepWithNext;
       if (p.keepTogether !== undefined) para.keepTogether = p.keepTogether;
       if (plan.listLevel !== undefined && range.listFormat) { range.listFormat.applyBullet?.(); range.listFormat.level = plan.listLevel; }
-      range.insertOoxml?.(buildParagraphOoxml({ lineTwip: p.lineSpacingPt === undefined ? undefined : p.lineSpacingPt * 20, leftTwip: p.leftIndentTwip, firstLineTwip: p.firstLineIndentTwip, beforeTwip: p.spaceBeforeTwip, afterTwip: p.spaceAfterTwip, outlineLevel: plan.outlineLevel, keepNext: p.keepWithNext, keepLines: p.keepTogether }), "Replace");
+      if (plan.outlineLevel !== undefined) para.outlineLevel = plan.outlineLevel;
       await context.sync();
     });
   }

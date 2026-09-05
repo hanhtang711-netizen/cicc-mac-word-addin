@@ -5,7 +5,7 @@
   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
   xsi:type="TaskPaneApp">
   <Id>8bba4fb2-e2ec-4ab5-94ee-f5d1d3ef4701</Id>
-  <Version>0.1.0.0</Version>
+  <Version>1.0.0.0</Version>
   <ProviderName>CICC</ProviderName>
   <DefaultLocale>zh-CN</DefaultLocale>
   <DisplayName DefaultValue="中金 Word 工具" />
@@ -25,22 +25,22 @@
       <ExtensionPoint xsi:type="PrimaryCommandSurface"><CustomTab id="CiccWord.Tab">
         <Group id="CiccWord.Styles.Group"><Label resid="Styles.Group.Label" /><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon>
           <Control xsi:type="Menu" id="BodyStyles.Menu"><Label resid="Styles.Menu.Label" /><Supertip><Title resid="Styles.Menu.Label" /><Description resid="Styles.Menu.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Items>
-            <Item id="StyleHeading1"><Label resid="Style.Heading1" /><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading1</FunctionName></Action></Item>
-            <Item id="StyleHeading2"><Label resid="Style.Heading2" /><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading2</FunctionName></Action></Item>
-            <Item id="StyleHeading3"><Label resid="Style.Heading3" /><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading3</FunctionName></Action></Item>
-            <Item id="StyleBody"><Label resid="Style.Body" /><Action xsi:type="ExecuteFunction"><FunctionName>applyBody</FunctionName></Action></Item>
-            <Item id="StyleIndented"><Label resid="Style.Indented" /><Action xsi:type="ExecuteFunction"><FunctionName>applyIndentedBody</FunctionName></Action></Item>
-            <Item id="StyleBullet1"><Label resid="Style.Bullet1" /><Action xsi:type="ExecuteFunction"><FunctionName>applyBullet1</FunctionName></Action></Item>
-            <Item id="StyleBullet2"><Label resid="Style.Bullet2" /><Action xsi:type="ExecuteFunction"><FunctionName>applyBullet2</FunctionName></Action></Item>
-            <Item id="StyleChartTitle"><Label resid="Style.ChartTitle" /><Action xsi:type="ExecuteFunction"><FunctionName>applyChartTitle</FunctionName></Action></Item>
-            <Item id="StyleSource"><Label resid="Style.Source" /><Action xsi:type="ExecuteFunction"><FunctionName>applySourceLine</FunctionName></Action></Item>
+            <Item id="StyleHeading1"><Label resid="Style.Heading1" /><Supertip><Title resid="Style.Heading1" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading1</FunctionName></Action></Item>
+            <Item id="StyleHeading2"><Label resid="Style.Heading2" /><Supertip><Title resid="Style.Heading2" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading2</FunctionName></Action></Item>
+            <Item id="StyleHeading3"><Label resid="Style.Heading3" /><Supertip><Title resid="Style.Heading3" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading3</FunctionName></Action></Item>
+            <Item id="StyleBody"><Label resid="Style.Body" /><Supertip><Title resid="Style.Body" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyBody</FunctionName></Action></Item>
+            <Item id="StyleIndented"><Label resid="Style.Indented" /><Supertip><Title resid="Style.Indented" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyIndentedBody</FunctionName></Action></Item>
+            <Item id="StyleBullet1"><Label resid="Style.Bullet1" /><Supertip><Title resid="Style.Bullet1" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyBullet1</FunctionName></Action></Item>
+            <Item id="StyleBullet2"><Label resid="Style.Bullet2" /><Supertip><Title resid="Style.Bullet2" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyBullet2</FunctionName></Action></Item>
+            <Item id="StyleChartTitle"><Label resid="Style.ChartTitle" /><Supertip><Title resid="Style.ChartTitle" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyChartTitle</FunctionName></Action></Item>
+            <Item id="StyleSource"><Label resid="Style.Source" /><Supertip><Title resid="Style.Source" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applySourceLine</FunctionName></Action></Item>
           </Items></Control>
         </Group>
         <Group id="CiccWord.Layout.Group"><Label resid="Layout.Group.Label" /><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon>
           <Control xsi:type="Menu" id="Layouts.Menu"><Label resid="Layouts.Menu.Label" /><Supertip><Title resid="Layouts.Menu.Label" /><Description resid="Layouts.Menu.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Items>
-            <Item id="LayoutWide"><Label resid="Layout.Wide" /><Action xsi:type="ExecuteFunction"><FunctionName>insertWideLayout</FunctionName></Action></Item>
-            <Item id="LayoutNarrow"><Label resid="Layout.Narrow" /><Action xsi:type="ExecuteFunction"><FunctionName>insertNarrowLayout</FunctionName></Action></Item>
-            <Item id="LayoutDouble"><Label resid="Layout.Double" /><Action xsi:type="ExecuteFunction"><FunctionName>insertDoubleLayout</FunctionName></Action></Item>
+            <Item id="LayoutWide"><Label resid="Layout.Wide" /><Supertip><Title resid="Layout.Wide" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>insertWideLayout</FunctionName></Action></Item>
+            <Item id="LayoutNarrow"><Label resid="Layout.Narrow" /><Supertip><Title resid="Layout.Narrow" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>insertNarrowLayout</FunctionName></Action></Item>
+            <Item id="LayoutDouble"><Label resid="Layout.Double" /><Supertip><Title resid="Layout.Double" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>insertDoubleLayout</FunctionName></Action></Item>
           </Items></Control>
         </Group>
         <Group id="CiccWord.Toc.Group"><Label resid="Toc.Group.Label" /><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon>
