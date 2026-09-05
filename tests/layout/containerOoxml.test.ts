@@ -7,7 +7,9 @@ describe("blank container OOXML", () => {
     expect(xml).toContain('<w:tblLayout w:type="fixed"/>'); expect(xml).toContain('<w:top w:val="nil"/>'); expect(xml).toContain('w:w="4873"'); expect(xml).toContain('w:val="1707"');
     expect(xml.match(/w:pStyle w:val="ChartTableTitle"/g)).toHaveLength(2);
     expect(xml.match(/w:pStyle w:val="RPBodySourceLine"/g)).toHaveLength(2);
-    expect(xml.match(/<w:t[^>]*>图表：<\/w:t>/g)).toHaveLength(2);
+    expect(xml.match(/<w:t[^>]*>图表<\/w:t>/g)).toHaveLength(2);
+    expect(xml.match(/<w:fldSimple[^>]*SEQ Figure[^>]*>/g)).toHaveLength(2);
+    expect(xml.match(/<w:t[^>]*>：<\/w:t>/g)).toHaveLength(2);
     expect(xml.match(/<w:t[^>]*>资料来源：<\/w:t>/g)).toHaveLength(2);
     expect(xml).not.toMatch(/粘贴|在此|<w:drawing|<w:blip/);
   });

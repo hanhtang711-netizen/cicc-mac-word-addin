@@ -56,7 +56,25 @@ export class WordGateway {
 
   async insertLayout(kind: "wide"|"narrow"|"double"): Promise<void> {
     const plan = planContainer(kind);
-    await this.run(async (context) => { const range: any = context.document.getSelection(); range.insertOoxml(buildContainerOoxml(plan), "Before"); await context.sync(); });
+    await this.run(async (context) => {
+      const range: any = context.document.getSelection();
+      const inserted: any = range.insertOoxml(buildContainerOoxml(plan), "Before");
+      await context.sync();
+      // Refresh SEQ Figure fields so the newly inserted caption displays its
+      // current number immediately.  Field updates are optional metadata;
+      // hosts that do not expose fields must still keep the layout insertion.
+      try {
+        if (inserted?.fields?.load) {
+          inserted.fields.load("items");
+          await context.sync();
+          for (const field of inserted.fields.items ?? []) field.update?.();
+          await context.sync();
+        }
+      } catch {
+        // The OOXML field remains in the document and can be refreshed with
+        // Word's normal Update Field command when the host declines updates.
+      }
+    });
   }
 
   async insertOrUpdateToc(kind: "toc"|"figures"): Promise<void> {

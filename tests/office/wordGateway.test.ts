@@ -27,4 +27,22 @@ describe("Word gateway", () => {
     expect(range.paragraphFormat.outlineLevel).toBe(0);
     expect(range.style).toBe("Heading 1");
   });
+
+  it("updates figure sequence fields immediately after inserting a layout", async () => {
+    let updated = 0;
+    const inserted: any = {
+      fields: {
+        items: [{ update: () => { updated += 1; } }],
+        load: () => undefined,
+      },
+    };
+    const range: any = { insertOoxml: () => inserted };
+    const gateway = new WordGateway(async (callback) => callback({
+      document: { getSelection: () => range },
+      sync: async () => undefined,
+    } as any));
+
+    await gateway.insertLayout("wide");
+    expect(updated).toBe(1);
+  });
 });
