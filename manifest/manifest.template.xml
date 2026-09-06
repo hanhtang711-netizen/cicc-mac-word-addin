@@ -10,8 +10,8 @@
   <DefaultLocale>zh-CN</DefaultLocale>
   <DisplayName DefaultValue="中金 Word 工具" />
   <Description DefaultValue="中金正文样式、图表版式与目录工具" />
-  <IconUrl DefaultValue="{{BASE_URL}}/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="{{BASE_URL}}/assets/icon-80.png" />
+  <IconUrl DefaultValue="{{BASE_URL}}/assets/word-32.png" />
+  <HighResolutionIconUrl DefaultValue="{{BASE_URL}}/assets/word-80.png" />
   <SupportUrl DefaultValue="{{BASE_URL}}/taskpane.html" />
   <AppDomains><AppDomain>{{BASE_URL}}</AppDomain></AppDomains>
   <Hosts><Host Name="Document" /></Hosts>
@@ -23,8 +23,8 @@
     <Hosts><Host xsi:type="Document"><DesktopFormFactor>
       <FunctionFile resid="Commands.Url" />
       <ExtensionPoint xsi:type="PrimaryCommandSurface"><CustomTab id="CiccWord.Tab">
-        <Group id="CiccWord.Styles.Group"><Label resid="Styles.Group.Label" /><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon>
-          <Control xsi:type="Menu" id="BodyStyles.Menu"><Label resid="Styles.Menu.Label" /><Supertip><Title resid="Styles.Menu.Label" /><Description resid="Styles.Menu.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Items>
+        <Group id="CiccWord.Styles.Group"><Label resid="Styles.Group.Label" /><Icon><bt:Image size="16" resid="StyleIcon.16" /><bt:Image size="32" resid="StyleIcon.32" /><bt:Image size="80" resid="StyleIcon.80" /></Icon>
+          <Control xsi:type="Menu" id="BodyStyles.Menu"><Label resid="Styles.Menu.Label" /><Supertip><Title resid="Styles.Menu.Label" /><Description resid="Styles.Menu.Desc" /></Supertip><Icon><bt:Image size="16" resid="StyleIcon.16" /><bt:Image size="32" resid="StyleIcon.32" /><bt:Image size="80" resid="StyleIcon.80" /></Icon><Items>
             <Item id="StyleHeading1"><Label resid="Style.Heading1" /><Supertip><Title resid="Style.Heading1" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading1</FunctionName></Action></Item>
             <Item id="StyleHeading2"><Label resid="Style.Heading2" /><Supertip><Title resid="Style.Heading2" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading2</FunctionName></Action></Item>
             <Item id="StyleHeading3"><Label resid="Style.Heading3" /><Supertip><Title resid="Style.Heading3" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applyHeading3</FunctionName></Action></Item>
@@ -36,23 +36,46 @@
             <Item id="StyleSource"><Label resid="Style.Source" /><Supertip><Title resid="Style.Source" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>applySourceLine</FunctionName></Action></Item>
           </Items></Control>
         </Group>
-        <Group id="CiccWord.Layout.Group"><Label resid="Layout.Group.Label" /><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon>
-          <Control xsi:type="Menu" id="Layouts.Menu"><Label resid="Layouts.Menu.Label" /><Supertip><Title resid="Layouts.Menu.Label" /><Description resid="Layouts.Menu.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Items>
+        <Group id="CiccWord.Layout.Group"><Label resid="Layout.Group.Label" /><Icon><bt:Image size="16" resid="LayoutIcon.16" /><bt:Image size="32" resid="LayoutIcon.32" /><bt:Image size="80" resid="LayoutIcon.80" /></Icon>
+          <Control xsi:type="Menu" id="Layouts.Menu"><Label resid="Layouts.Menu.Label" /><Supertip><Title resid="Layouts.Menu.Label" /><Description resid="Layouts.Menu.Desc" /></Supertip><Icon><bt:Image size="16" resid="LayoutIcon.16" /><bt:Image size="32" resid="LayoutIcon.32" /><bt:Image size="80" resid="LayoutIcon.80" /></Icon><Items>
             <Item id="LayoutWide"><Label resid="Layout.Wide" /><Supertip><Title resid="Layout.Wide" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>insertWideLayout</FunctionName></Action></Item>
             <Item id="LayoutNarrow"><Label resid="Layout.Narrow" /><Supertip><Title resid="Layout.Narrow" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>insertNarrowLayout</FunctionName></Action></Item>
             <Item id="LayoutDouble"><Label resid="Layout.Double" /><Supertip><Title resid="Layout.Double" /><Description resid="Styles.Menu.Desc" /></Supertip><Action xsi:type="ExecuteFunction"><FunctionName>insertDoubleLayout</FunctionName></Action></Item>
           </Items></Control>
         </Group>
-        <Group id="CiccWord.Toc.Group"><Label resid="Toc.Group.Label" /><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon>
-          <Control xsi:type="Button" id="InsertToc"><Label resid="Toc.Insert" /><Supertip><Title resid="Toc.Insert" /><Description resid="Toc.Insert.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Action xsi:type="ExecuteFunction"><FunctionName>insertToc</FunctionName></Action></Control>
-          <Control xsi:type="Button" id="InsertFigures"><Label resid="Toc.Figures" /><Supertip><Title resid="Toc.Figures" /><Description resid="Toc.Figures.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Action xsi:type="ExecuteFunction"><FunctionName>insertFiguresToc</FunctionName></Action></Control>
-          <Control xsi:type="Button" id="OpenTaskpane"><Label resid="Taskpane.Label" /><Supertip><Title resid="Taskpane.Label" /><Description resid="Taskpane.Desc" /></Supertip><Icon><bt:Image size="16" resid="Icon.16" /><bt:Image size="32" resid="Icon.32" /><bt:Image size="80" resid="Icon.80" /></Icon><Action xsi:type="ShowTaskpane"><TaskpaneId>CiccWordPane</TaskpaneId><SourceLocation resid="Taskpane.Url" /></Action></Control>
+        <Group id="CiccWord.Toc.Group"><Label resid="Toc.Group.Label" /><Icon><bt:Image size="16" resid="TocIcon.16" /><bt:Image size="32" resid="TocIcon.32" /><bt:Image size="80" resid="TocIcon.80" /></Icon>
+          <Control xsi:type="Button" id="InsertToc"><Label resid="Toc.Insert" /><Supertip><Title resid="Toc.Insert" /><Description resid="Toc.Insert.Desc" /></Supertip><Icon><bt:Image size="16" resid="TocIcon.16" /><bt:Image size="32" resid="TocIcon.32" /><bt:Image size="80" resid="TocIcon.80" /></Icon><Action xsi:type="ExecuteFunction"><FunctionName>insertToc</FunctionName></Action></Control>
+          <Control xsi:type="Button" id="InsertFigures"><Label resid="Toc.Figures" /><Supertip><Title resid="Toc.Figures" /><Description resid="Toc.Figures.Desc" /></Supertip><Icon><bt:Image size="16" resid="FiguresIcon.16" /><bt:Image size="32" resid="FiguresIcon.32" /><bt:Image size="80" resid="FiguresIcon.80" /></Icon><Action xsi:type="ExecuteFunction"><FunctionName>insertFiguresToc</FunctionName></Action></Control>
+          <Control xsi:type="Button" id="OpenTaskpane"><Label resid="Taskpane.Label" /><Supertip><Title resid="Taskpane.Label" /><Description resid="Taskpane.Desc" /></Supertip><Icon><bt:Image size="16" resid="TaskpaneIcon.16" /><bt:Image size="32" resid="TaskpaneIcon.32" /><bt:Image size="80" resid="TaskpaneIcon.80" /></Icon><Action xsi:type="ShowTaskpane"><TaskpaneId>CiccWordPane</TaskpaneId><SourceLocation resid="Taskpane.Url" /></Action></Control>
         </Group>
         <Label resid="CiccWord.Tab.Label" />
       </CustomTab></ExtensionPoint>
     </DesktopFormFactor></Host></Hosts>
     <Resources>
-      <bt:Images><bt:Image id="Icon.16" DefaultValue="{{BASE_URL}}/assets/icon-16.png" /><bt:Image id="Icon.32" DefaultValue="{{BASE_URL}}/assets/icon-32.png" /><bt:Image id="Icon.64" DefaultValue="{{BASE_URL}}/assets/icon-64.png" /><bt:Image id="Icon.80" DefaultValue="{{BASE_URL}}/assets/icon-80.png" /></bt:Images>
+      <bt:Images><bt:Image id="StyleIcon.16" DefaultValue="{{BASE_URL}}/assets/style-16.png" />
+<bt:Image id="StyleIcon.32" DefaultValue="{{BASE_URL}}/assets/style-32.png" />
+<bt:Image id="StyleIcon.64" DefaultValue="{{BASE_URL}}/assets/style-64.png" />
+<bt:Image id="StyleIcon.80" DefaultValue="{{BASE_URL}}/assets/style-80.png" />
+<bt:Image id="LayoutIcon.16" DefaultValue="{{BASE_URL}}/assets/layout-16.png" />
+<bt:Image id="LayoutIcon.32" DefaultValue="{{BASE_URL}}/assets/layout-32.png" />
+<bt:Image id="LayoutIcon.64" DefaultValue="{{BASE_URL}}/assets/layout-64.png" />
+<bt:Image id="LayoutIcon.80" DefaultValue="{{BASE_URL}}/assets/layout-80.png" />
+<bt:Image id="TocIcon.16" DefaultValue="{{BASE_URL}}/assets/toc-16.png" />
+<bt:Image id="TocIcon.32" DefaultValue="{{BASE_URL}}/assets/toc-32.png" />
+<bt:Image id="TocIcon.64" DefaultValue="{{BASE_URL}}/assets/toc-64.png" />
+<bt:Image id="TocIcon.80" DefaultValue="{{BASE_URL}}/assets/toc-80.png" />
+<bt:Image id="FiguresIcon.16" DefaultValue="{{BASE_URL}}/assets/figures-16.png" />
+<bt:Image id="FiguresIcon.32" DefaultValue="{{BASE_URL}}/assets/figures-32.png" />
+<bt:Image id="FiguresIcon.64" DefaultValue="{{BASE_URL}}/assets/figures-64.png" />
+<bt:Image id="FiguresIcon.80" DefaultValue="{{BASE_URL}}/assets/figures-80.png" />
+<bt:Image id="TaskpaneIcon.16" DefaultValue="{{BASE_URL}}/assets/taskpane-16.png" />
+<bt:Image id="TaskpaneIcon.32" DefaultValue="{{BASE_URL}}/assets/taskpane-32.png" />
+<bt:Image id="TaskpaneIcon.64" DefaultValue="{{BASE_URL}}/assets/taskpane-64.png" />
+<bt:Image id="TaskpaneIcon.80" DefaultValue="{{BASE_URL}}/assets/taskpane-80.png" />
+<bt:Image id="WordIcon.16" DefaultValue="{{BASE_URL}}/assets/word-16.png" />
+<bt:Image id="WordIcon.32" DefaultValue="{{BASE_URL}}/assets/word-32.png" />
+<bt:Image id="WordIcon.64" DefaultValue="{{BASE_URL}}/assets/word-64.png" />
+<bt:Image id="WordIcon.80" DefaultValue="{{BASE_URL}}/assets/word-80.png" /><bt:Image id="Icon.16" DefaultValue="{{BASE_URL}}/assets/icon-16.png" /><bt:Image id="Icon.32" DefaultValue="{{BASE_URL}}/assets/word-32.png" /><bt:Image id="Icon.64" DefaultValue="{{BASE_URL}}/assets/icon-64.png" /><bt:Image id="Icon.80" DefaultValue="{{BASE_URL}}/assets/word-80.png" /></bt:Images>
       <bt:Urls><bt:Url id="Commands.Url" DefaultValue="{{BASE_URL}}/commands.html" /><bt:Url id="Taskpane.Url" DefaultValue="{{BASE_URL}}/taskpane.html" /></bt:Urls>
       <bt:ShortStrings>
         <bt:String id="CiccWord.Tab.Label" DefaultValue="中金 Word" /><bt:String id="Styles.Group.Label" DefaultValue="正文样式" /><bt:String id="Styles.Menu.Label" DefaultValue="应用样式" /><bt:String id="Layout.Group.Label" DefaultValue="图表版式" /><bt:String id="Layouts.Menu.Label" DefaultValue="插入图片框" /><bt:String id="Toc.Group.Label" DefaultValue="目录" /><bt:String id="Toc.Insert" DefaultValue="目录" /><bt:String id="Toc.Figures" DefaultValue="图表目录" /><bt:String id="Taskpane.Label" DefaultValue="打开工具窗格" />
