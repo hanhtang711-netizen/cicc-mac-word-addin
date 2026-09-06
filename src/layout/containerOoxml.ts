@@ -10,7 +10,12 @@ const titleParagraph = () => `<w:p><w:pPr><w:pStyle w:val="ChartTableTitle"/><w:
 const imageParagraph = (alignment: "left" | "center") => `<w:p><w:pPr><w:jc w:val="${alignment}"/></w:pPr><w:r><w:t/></w:r></w:p>`;
 const sourceParagraph = () => `<w:p><w:pPr><w:pStyle w:val="RPBodySourceLine"/><w:spacing w:before="1" w:after="100" w:line="200" w:lineRule="exact"/><w:jc w:val="left"/></w:pPr>${buildRunOoxml({ text: "资料来源：", eastAsiaFont: "黑体", complexScriptFont: "黑体", sizeHalfPoints: 13, eastAsiaSizeHalfPoints: 15, italic: true })}</w:p>`;
 const sdtId = (tag: string) => tag.split("").reduce((hash, char) => ((hash * 31) + char.charCodeAt(0)) % 2147483646, 7) + 1;
-const imageControl = (slot: PictureSlot, imageAlignment: "left" | "center") => `<w:sdt><w:sdtPr><w:alias w:val="CICC 图表图片"/><w:tag w:val="${slot.tag}"/><w:id w:val="${sdtId(slot.tag)}"/><w:picture/></w:sdtPr><w:sdtContent>${imageParagraph(imageAlignment)}</w:sdtContent></w:sdt>`;
+// Do not use w:picture here.  Word treats that as a picture-only content
+// control and disables Paste Special, including for native Excel charts.
+// Rich text still exposes inlinePictures to the Word API, so the existing
+// post-paste width fitting remains available when the chart is pasted as an
+// image.
+const imageControl = (slot: PictureSlot, imageAlignment: "left" | "center") => `<w:sdt><w:sdtPr><w:alias w:val="CICC 图表图片"/><w:tag w:val="${slot.tag}"/><w:id w:val="${sdtId(slot.tag)}"/><w:richText/></w:sdtPr><w:sdtContent>${imageParagraph(imageAlignment)}</w:sdtContent></w:sdt>`;
 const cell = (width: number, row: number, imageAlignment: "left" | "center", slot: PictureSlot) => `<w:tc><w:tcPr><w:tcW w:w="${width}" w:type="dxa"/></w:tcPr>${row === 0 ? titleParagraph() : row === 1 ? imageControl(slot, imageAlignment) : sourceParagraph()}</w:tc>`;
 export function buildContainerOoxml(plan: ContainerPlan, pictureSlots = createPictureSlots(plan, "preview")): string {
   const borders = `<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>`;

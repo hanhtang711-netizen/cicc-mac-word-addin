@@ -20,7 +20,10 @@ describe("blank container OOXML", () => {
     expect(xml.match(/<w:t[^>]*>：<\/w:t>/g)).toHaveLength(2);
     expect(xml.match(/<w:t[^>]*>资料来源：<\/w:t>/g)).toHaveLength(2);
     expect(xml).not.toMatch(/粘贴|在此|<w:drawing|<w:blip/);
-    expect(xml).toContain('<w:picture/>');
+    // A picture-only content control disables Word's Paste Special command.
+    // The image cell must accept a native Excel chart pasted as an image, too.
+    expect(xml).toContain('<w:richText/>');
+    expect(xml).not.toContain('<w:picture/>');
     expect(xml).toContain('w:tag w:val="cicc-picture:double:fixture:1"');
     expect(xml).toContain('w:tag w:val="cicc-picture:double:fixture:2"');
   });
